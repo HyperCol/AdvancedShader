@@ -1,0 +1,12 @@
+[
+    {
+        "modid": "advancedshader",
+        "name": "光影前向兼容AdvancedShader",
+        "description": "启用后可使用Minecraft 1.16.5+版本的光影",
+        "version": "1.0-FINAL",
+        "mcversion": "1.12.2",
+        "credits": "感谢在我最孤单时陪着我的ネムロイ和阳炘，感谢参与内测的Surisen（内测的神， 几乎所有严重Bug都是这位发现的）、ExDragine（宣发支持）、GeForceLegend（Bug提交者）、villa_qi（Bug提交者）、EpsilonSatoshi、少修、奥维利亚two",
+        "authorList": ["一只猫", "I have no name", "I am but two days old.", "you can call me V", "and this is POWER!"],
+        "requiredMods": ["Optifine"]
+    }
+]

@@ -1,0 +1,673 @@
+advancedshader/Hook 光影前向兼容
+	LOGGER 日志记录器
+	colorTextureImageUnit 颜色纹理单元
+	shadowTextureImageUnit 阴影纹理单元
+	gbuffersFormat 颜色纹理格式配置
+	shadowFormat 阴影纹理格式配置
+	shadowClear 阴影纹理清除配置
+	shadowClearColor 阴影纹理清除颜色配置
+	velocityAttrib 实体顶点运动量属性
+	midBlockAttrib 方块中心偏移值属性
+	progUseVelocityAttrib 已使用实体顶点运动量属性
+	progUseMidBlockAttrib 已使用方块中心偏移值属性
+	colortex8_16 追加颜色纹理统一变量
+	colorimgs 颜色图像统一变量
+	shadowcolorimgs 阴影图像统一变量
+	uniformChunkOffset 区块偏移值统一变量
+	uniformSpriteBounds 精灵图元素坐标统一向量
+	uniformPlayerMood 氛围值统一变量
+	uniformRenderStage 渲染阶段统一变量
+	shaderPackShadowTerrain 地形阴影配置
+	shaderPackShadowEntities 实体阴影配置
+	shaderPackShadowBlockEntities 实体方块阴影配置
+	programLine 线段着色器程序
+	programPrepare 预处理着色器程序
+	programShadowComp 阴影后处理着色器程序
+	customTexturesPrepare 预处理着色器自定义纹理
+	customTexturesShadowComp 阴影后处理着色器自定义纹理
+	hasPrepare 是否拥有预处理着色器
+	hasShadowComp 是否拥有阴影后处理着色器
+	bindColorImages 是否绑定颜色图像
+	dynamicDimensionFB 可变分辨率帧缓冲
+	fakeColorAttachment0 缓冲区纹理占位符
+	modelView 变换矩阵
+	modelViewInverse 逆变换矩阵
+	shadowModelView 阴影变换矩阵
+	shadowModelViewInverse 阴影逆变换矩阵
+	tempMatrixDirectBuffer 临时矩阵
+	sfbDrawBuffers 阴影着色器渲染目标
+	dfbColorTexturesFlip 延迟着色乒乓缓冲区
+	sfbColorTexturesFlip 阴影着色乒乓缓冲区
+	renderStage 当前渲染阶段
+	setProgramUniform1i 设定int统一变量
+	setProgramUniform1f 设定float统一变量
+	setProgramUniform3f 设定vec3统一变量
+	bindGbuffersTextures 绑定几何着色纹理
+	renderComposites 渲染后处理着色器
+	getPixelFormat 获取像素格式
+	applyOptions 应用光影选项至当前代码行
+	printLogInfo 打印日志
+	printShaderLogInfo 打印着色器日志
+	printChatAndLogError 输出报错至聊天框
+	dfb 延迟着色帧缓冲
+	sfb 阴影着色帧缓冲
+	usedShadowColorBuffers 使用的阴影颜色纹理数量
+	shadowMapWidth 阴影纹理宽度
+	shadowMapHeight 阴影纹理高度
+	usedShadowDepthBuffers 使用的阴影深度纹理数量
+	usedDepthBuffers 使用的深度纹理数量
+	usedColorBuffers 使用的颜色纹理数量
+	usedDrawBuffers 使用的缓冲区数量
+	cameraPositionX 相机坐标X
+	cameraPositionY 相机坐标Y
+	cameraPositionZ 相机坐标Z
+	eyePosY 眼坐标Y
+	addMacroLines (Ljava/lang/StringBuilder;)V 增加额外宏
+	addUniforms (Lnet/optifine/shaders/uniform/ShaderUniforms;)V 增加统一变量
+	addPrograms (Lnet/optifine/shaders/Programs;)V 增加着色器程序
+	updateUniform (Lnet/optifine/shaders/Program;ZZ)V 设定统一变量值
+	setProgramUniform1i (Lnet/optifine/shaders/uniform/ShaderUniform1i;I)V 设定int统一变量
+	setProgramUniform1f (Lnet/optifine/shaders/uniform/ShaderUniform1f;F)V 设定float统一变量
+	setProgramUniform3f (Lnet/optifine/shaders/uniform/ShaderUniform3f;FFF)V 设定vec3统一变量
+	setProgramUniform4f (Lnet/optifine/shaders/uniform/ShaderUniform4f;FFFF)V 设定vec4统一变量
+	bindGbuffersTextures ()V 绑定几何着色纹理
+	renderComposites ([Lnet/optifine/shaders/Program;Z)V 渲染后处理着色器
+	getPixelFormat (I)I 获取像素格式
+	applyOptions (Ljava/lang/String;[Lnet/optifine/shaders/config/ShaderOption;)Ljava/lang/String; 应用光影选项至当前代码行
+	printLogInfo (ILjava/lang/String;)Z 打印日志
+	printShaderLogInfo (ILjava/lang/String;Ljava/util/List;)Z 打印着色器日志
+	printChatAndLogError (Ljava/lang/String;)V 输出报错至聊天框
+	getDfb ()I 获取延迟着色帧缓冲
+	getSfb ()I 获取阴影着色帧缓冲
+	getUsedShadowColorBuffers ()I 获取使用的阴影颜色纹理数量
+	setUsedShadowColorBuffers (I)V 设定使用的阴影颜色纹理数量
+	getShadowMapWidth ()I 获取阴影纹理宽度
+	getShadowMapHeight ()I 获取阴影纹理高度
+	getUsedShadowDepthBuffers ()I 获取使用的阴影深度纹理数量
+	setUsedShadowDepthBuffers (I)V 设定使用的阴影深度纹理数量
+	getUsedDepthBuffers ()I 获取使用的深度纹理数量
+	setUsedDepthBuffers (I)V 设定使用的深度纹理数量
+	getUsedColorBuffers ()I 获取使用的颜色纹理数量
+	setUsedColorBuffers (I)V 设定使用的颜色纹理数量
+	getUsedDrawBuffers ()I 获取使用的缓冲区数量
+	getCameraPositionX ()D 获取相机坐标X
+	setCameraPositionX (D)V 设定相机坐标X
+	getCameraPositionY ()D 获取相机坐标Y
+	setCameraPositionY (D)V 设定相机坐标Y
+	getCameraPositionZ ()D 获取相机坐标Z
+	setCameraPositionZ (D)V 设定相机坐标Z
+	setEyePosY (F)V 设定眼坐标Y
+	getShadowBufferIndex (Ljava/lang/String;)I 获取阴影缓冲区ID
+	getMethod (Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method; 反射方法
+	getField (Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/reflect/Field; 反射属性
+	registerBus (Lcom/google/common/eventbus/EventBus;Lnet/minecraftforge/fml/common/LoadController;)Z registerBus
+	getSource ()Ljava/io/File; getSource
+	getCustomResourcePackClass ()Ljava/lang/Class; getCustomResourcePackClass
+advancedshader/Hook$1 光影前向兼容$1
+advancedshader/Hook$AnisotropicFilter 光影前向兼容$各向异性过滤
+	frameCounter 帧计数器
+	preUploadDisplayList (Lnet/minecraft/util/BlockRenderLayer;)V 配置统一变量着色器
+	postUploadDisplayList ()V 恢复统一变量着色器
+	bindShaderMultiTexture (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V 多重纹理着色器配置
+	loadShaderSprite (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V 加载着色器精灵图元素
+	updateShaderSpriteAnimation (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)Z 更新着色器精灵图动画
+	unloadShaderSprite (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V 删除着色器精灵图元素
+	loadSpriteSingle (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V 加载精灵图独立元素
+	getFrameCounter (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)I 获取帧计数器
+	setFrameCounter (Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;I)V 设定帧计数器
+advancedshader/Hook$Blend 光影前向兼容$颜色混合配置
+	propBlend 颜色混合配置
+	applyCurrentBlend 应用当前混合配置至所有缓冲区
+	parseBlendState parseBlendState
+	parseBlendBuffer ([Ljava/lang/String;Ljava/lang/String;)V 获取缓冲区颜色混合配置
+	updateOldBlendStateIndexed (Lnet/optifine/shaders/Program;)V 恢复旧颜色混合配置
+	updateNewBlendStateIndexed (Lnet/optifine/shaders/Program;)V 应用新颜色混合配置
+	applyCurrentBlend ()V 应用当前混合配置至所有缓冲区
+	setBlendIndexed (ILnet/optifine/render/GlBlendState;)V 为单一缓冲区配置颜色混合
+	parseBlendState (Ljava/lang/String;)Lnet/optifine/render/GlBlendState; 获取颜色混合配置
+advancedshader/Hook$BlockAliasFix 光影前向兼容$方块自定义ID修复
+	blockAliases 方块自定义ID集合
+	getBlockAliasId (Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/IBlockAccess;)I 获取方块自定义ID
+	getBlockAliases ()[[Lnet/optifine/shaders/BlockAlias; 获取方块自定义ID集合
+advancedshader/Hook$BlockAliasFix$MatchBlockState 光影前向兼容$方块自定义ID修复$方块状态容器
+	properties 方块属性
+advancedshader/Hook$BufferSize 光影前向兼容$缓冲区纹理分辨率
+	isRelative 是否相对屏幕分辨率
+	bufferSize 缓冲区纹理分辨率
+	shouldResize 是否需切换可变分辨率帧缓冲
+	oldRenderWidth 暂存屏幕宽度
+	oldRenderHeight 暂存屏幕高度
+	resetBufferSizes ()V 重置缓冲区纹理大小配置
+	parseBufferSizes (Ljava/util/Properties;)V 获取缓冲区纹理大小配置
+	updateProgramSize (Lnet/optifine/shaders/Program;)V 着色器缓冲区纹理大小一致性检查
+	getResizedWidth (II)I 获取缓冲区纹理宽度
+	getResizedHeight (II)I 获取缓冲区纹理高度
+	shouldBindForSetup (I)Z 是否绑定缓冲区纹理
+	preDrawComposite ()V 后处理着色器执行前方法
+	postDrawComposite ()V 后处理着色器执行后方法
+	initDynamicDimensions ()V 初始化可变分辨率帧缓冲
+	uninitDynamicDimensions ()V 删除可变分辨率帧缓冲
+	switchFramebuffer (I)V 切换可变分辨率帧缓冲
+	checkResize (Lnet/optifine/shaders/Program;)Z 切换可变分辨率帧缓冲
+advancedshader/Hook$CameraFix 光影前向兼容$相机
+	fixCamera ()V 修复相机
+	fixCameraShadow ()V 修复阴影相机
+	getMatrix (Ljava/nio/FloatBuffer;)Lorg/lwjgl/util/vector/Matrix4f; 读取矩阵
+	setMatrix (Ljava/nio/FloatBuffer;Lorg/lwjgl/util/vector/Matrix4f;)V 写入矩阵
+advancedshader/Hook$ChunkOffset 光影前向兼容$区块偏移值
+	setChunkOffset (FFF)Z 配置区块偏移值统一向量
+advancedshader/Hook$ComputeShader 光影前向兼容$计算着色器
+	computes 计算着色器集
+	PATTERN_LAYOUT 布局配置正则
+	PATTERN_CONST_IVEC3 ivec3常量正则
+	PATTERN_CONST_VEC2 vec2常量正则
+	apertureResolveIncludes apertureResolveIncludes
+	setupComputePrograms (Lnet/optifine/shaders/Program;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V 初始化计算着色器程序集
+	setupComputeProgram (Ladvancedshader/Hook$ComputeShader$ComputeProgram;Ljava/lang/String;)V 初始化计算着色器程序
+	createCompShader (Ladvancedshader/Hook$ComputeShader$ComputeProgram;Ljava/lang/String;)I 创建计算着色器
+	deleteComputes (Lnet/optifine/shaders/Program;)V 删除计算着色器程序集
+	dispatchComputes (Lnet/optifine/shaders/Program;)V 执行计算着色器程序集
+	dispatchCompute (Ladvancedshader/Hook$ComputeShader$ComputeProgram;)V 执行计算着色器程序
+	parseUniform (Ljava/lang/String;)V 获取统一变量配置
+	resolveIncludes (Ljava/io/BufferedReader;Ljava/lang/String;Lnet/optifine/shaders/IShaderPack;ILjava/util/List;I)Ljava/io/BufferedReader; 读取着色器源码
+	getColorImageIndex (Ljava/lang/String;)I 获取颜色图像ID
+	getShadowColorImageIndex (Ljava/lang/String;)I 获取阴影图像ID
+	isLayout (Ljava/lang/String;Ljava/lang/String;)Z 是否为布局配置
+	parseLocalSize (Ljava/lang/String;)Ladvancedshader/Hook$ComputeShader$Vector3i; 获取工作组大小
+	isConstIVec3 (Ljava/lang/String;Ljava/lang/String;)Z 是否为ivec3常量
+	getValueIVec3 (Ljava/lang/String;)Ladvancedshader/Hook$ComputeShader$Vector3i; 获取ivec3常量
+	isConstVec2 (Ljava/lang/String;Ljava/lang/String;)Z 是否为vec2常量
+	getValueVec2 (Ljava/lang/String;)Lorg/lwjgl/util/vector/Vector2f; 获取vec2常量
+	bindColorImages ()V 绑定颜色图像
+	getImageFormat (I)I 获取图像格式
+	hasComputes (Lnet/optifine/shaders/Program;)Z 是否拥有计算着色器
+advancedshader/Hook$ComputeShader$ComputeProgram 光影前向兼容$计算着色器$着色器程序
+	localSize 工作组大小
+	workGroups 工作组数量
+	workGroupsRender 渲染倍率
+	resetConfiguration ()V resetConfiguration
+	getLocalSize ()Ladvancedshader/Hook$ComputeShader$Vector3i; 获取工作组大小
+	setLocalSize (Ladvancedshader/Hook$ComputeShader$Vector3i;)V 设定工作组大小
+	getWorkGroups ()Ladvancedshader/Hook$ComputeShader$Vector3i; 获取工作组数量
+	setWorkGroups (Ladvancedshader/Hook$ComputeShader$Vector3i;)V 设定工作组数量
+	getWorkGroupsRender ()Lorg/lwjgl/util/vector/Vector2f; 获取渲染倍率
+	setWorkGroupsRender (Lorg/lwjgl/util/vector/Vector2f;)V 设定渲染倍率
+	hasCompositeMipmaps ()Z 是否生成多层级纹理
+advancedshader/Hook$ComputeShader$Vector3i 光影前向兼容$计算着色器$Vector3i
+	x x
+	y y
+	z z
+	getX ()I getX
+	getY ()I getY
+	getZ ()I getZ
+advancedshader/Hook$CoreProfile 光影前向兼容$着色器核心配置模式兼容
+	PATTERN_VERSION 着色器版本正则表达式
+	PATTERN_UNIFORM 着色器统一变量正则表达式
+	PATTERN_ATTRIBUTE 着色器顶点属性正则表达式
+	MACRO_CORE 兼容转换宏
+	POS_VEC4 顶点坐标vec4类型
+	POS_VEC2 顶点坐标vec2类型
+	POS_FLOAT 顶点坐标float类型
+	COLOR_VEC3 顶点颜色vec3类型
+	COLOR_VEC2 顶点颜色vec2类型
+	COLOR_FLOAT 顶点颜色float类型
+	NORMAL_VEC4 顶点法线vec4类型
+	NORMAL_VEC2 顶点法线vec2类型
+	NORMAL_FLOAT 顶点法线float类型
+	UV0_VEC4 顶点纹理坐标vec4类型
+	UV0_VEC3 顶点纹理坐标vec3类型
+	UV0_FLOAT 顶点纹理坐标float类型
+	UV2_VEC4 顶点光照坐标vec4类型
+	UV2_VEC3 顶点光照坐标vec3类型
+	UV2_FLOAT 顶点光照坐标float类型
+	convertCoreProfile (Ljava/io/BufferedReader;)Ljava/io/BufferedReader; 核心配置兼容性转换
+advancedshader/Hook$CustomUniform 光影前向兼容$自定义统一变量
+	registerExpressions (Lnet/optifine/shaders/uniform/ShaderExpressionResolver;)V 注册表达式
+advancedshader/Hook$CustomUniform$1 光影前向兼容$自定义统一变量$1
+	eval ()F eval
+advancedshader/Hook$CustomUniform$2 光影前向兼容$自定义统一变量$2
+	eval ()F eval
+advancedshader/Hook$CustomUniform$3 光影前向兼容$自定义统一变量$3
+	eval ()F eval
+advancedshader/Hook$CustomUniform$BiomeCategory 光影前向兼容$自定义统一变量$生物群系类别
+	NONE NONE
+	TAIGA TAIGA
+	EXTREME_HILLS EXTREME_HILLS
+	JUNGLE JUNGLE
+	MESA MESA
+	PLAINS PLAINS
+	SAVANNA SAVANNA
+	ICY ICY
+	THEEND THEEND
+	BEACH BEACH
+	FOREST FOREST
+	OCEAN OCEAN
+	DESERT DESERT
+	RIVER RIVER
+	SWAMP SWAMP
+	MUSHROOM MUSHROOM
+	NETHER NETHER
+	biomes 生物群系集
+	values ()[Ladvancedshader/Hook$CustomUniform$BiomeCategory; values
+	valueOf (Ljava/lang/String;)Ladvancedshader/Hook$CustomUniform$BiomeCategory; valueOf
+	fromBiome (Lnet/minecraft/world/biome/Biome;)Ladvancedshader/Hook$CustomUniform$BiomeCategory; 获取生物群系类别
+	addBiome (Lnet/minecraft/world/biome/Biome;)V 增加生物群系
+advancedshader/Hook$CustomUniform$BiomeRainType 光影前向兼容$自定义统一变量$生物群系降雨类别
+	NONE NONE
+	RAIN RAIN
+	SNOW SNOW
+	values ()[Ladvancedshader/Hook$CustomUniform$BiomeRainType; values
+	valueOf (Ljava/lang/String;)Ladvancedshader/Hook$CustomUniform$BiomeRainType; valueOf
+	fromBiome (Lnet/minecraft/world/biome/Biome;)Ladvancedshader/Hook$CustomUniform$BiomeRainType; 获取生物群系降雨类别
+advancedshader/Hook$ForwardFeatures 光影前向兼容$高版本功能
+	TRIPWIRE 绊线
+	idMap 映射表
+	forwardVersion 高版本渲染机制
+	idMapping 高版本ID映射
+	playerMood 高版本氛围值机制
+	moodRandom 氛围值随机数生成器
+	mood 氛围值
+	lightningID 闪电实体自定义ID
+	getButtonText (Lnet/optifine/shaders/config/EnumShaderOption;)Ljava/lang/String; 获取按钮文本
+	getVersionText (Z)Ljava/lang/String; 获取按钮属性值
+	actionPerformed (Lnet/minecraft/client/gui/GuiButton;Z)Z 按钮事件触发
+	getEnumShaderOption (Lnet/optifine/shaders/config/EnumShaderOption;)Ljava/lang/String; 读取配置属性
+	setEnumShaderOption (Lnet/optifine/shaders/config/EnumShaderOption;Ljava/lang/String;)Z 写入配置属性
+	isForwardVersion ()Z 是否启用高版本渲染机制
+	getGameVersionKey (Ljava/lang/String;)Ljava/lang/String; 配置文件目标游戏版本
+	getOptiFineVersion (Ljava/lang/String;)Ljava/lang/String; 配置文件目标模组版本
+	replaceShaderVersionMacro (Ljava/lang/String;)Ljava/lang/String; 替换着色器游戏版本宏
+	replaceRenderLayer (Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/BlockRenderLayer;)Lnet/minecraft/util/BlockRenderLayer; 替换地形渲染类型
+	getBlockRenderLayers ([Lnet/minecraft/util/BlockRenderLayer;)[Lnet/minecraft/util/BlockRenderLayer; 获取可用地形渲染类型
+	getRenderLayer (Lnet/minecraft/util/BlockRenderLayer;)Lnet/minecraft/util/BlockRenderLayer; 获取当前地形渲染类型
+	beginTripwire ()V 绊线类型着色开始
+	endTripwire ()V 绊线类型着色结束
+	prepareHand ()V 复制深度图
+	replaceBlockVersionMacro (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 替换配置文件游戏版本宏
+	remapBlockID (Ljava/lang/String;)Ljava/lang/String; 方块ID重映射
+	remapItemID (Ljava/lang/String;)Ljava/lang/String; 物品ID重映射
+	remapEntityID (Ljava/lang/String;I)Ljava/lang/String; 实体ID重映射
+	getEntityAliasID (ILnet/minecraft/entity/Entity;)I 获取实体自定义ID
+	isAllowNegative (I)I 是否允许非法ID
+	isNegative (I)I 是否返回原版ID
+	beginLightningShader ()Z 启用闪电实体着色器
+	nextLightningEntity (Lnet/minecraft/entity/Entity;)V 配置闪电实体着色器
+	endLightningShader ()V 禁用闪电实体着色器
+	addPlayerMoodDebug (Ljava/util/List;)V 增加氛围值调试信息
+	updateMoodTick (I)I 更新氛围值
+	skipMoodCheck ()Z 跳过原版环境音效检查
+advancedshader/Hook$ForwardFeatures$BlockMapper 光影前向兼容$高版本功能$映射条目
+	sameProp 直接映射属性
+	targets 映射目标
+	match ([Ljava/lang/String;)[Ljava/lang/String; 匹配
+advancedshader/Hook$ForwardFeatures$Target 光影前向兼容$高版本功能$映射目标
+	conditions 映射条件
+	name 名称
+	properties 属性
+	toString ()Ljava/lang/String; toString
+advancedshader/Hook$LangFix 光影前向兼容$语言
+	fixLanguage (Ljava/util/zip/ZipFile;Ljava/lang/String;)Ljava/io/InputStream; 修复语言文件
+advancedshader/Hook$LineShader 光影前向兼容$线段着色器
+	lastProgram 上一个着色器
+	normalBuffer 顶点法线缓冲区
+	isCulling 剔除状态缓存
+	preDrawArray (ILnet/minecraft/client/renderer/BufferBuilder;)I 渲染前执行
+	postDrawArray ()V 渲染后执行
+	getNormalsFromBuffer (Ljava/nio/ByteBuffer;II)V 生成线段法线信息
+	endAddVertex (Lnet/minecraft/client/renderer/BufferBuilder;)V 追加顶点
+	shouldConvertQuads (I)Z 是否执行四边形转换
+advancedshader/Hook$MoreBuffers 光影前向兼容$更多缓冲区纹理
+	PATTERN_RENDER_TARGETS 渲染目标正则
+	attachColorBuffer (Lnet/optifine/shaders/Program;)V 附加颜色缓冲
+	checkRenderTargets (Lnet/optifine/shaders/config/ShaderLine;Lnet/optifine/shaders/Program;)V 获取渲染目标配置
+advancedshader/Hook$MoreStages 光影前向兼容$更多后处理着色器
+	oldRenderWidth 暂存屏幕宽度
+	oldRenderHeight 暂存屏幕高度
+	checkComposites ()V 检查是否存在后处理着色器
+	renderPrepare ()V 执行预处理着色器
+	renderShadowComp ()V 执行阴影后处理着色器
+	preDrawComposite ()V 后处理着色器执行前方法
+	postDrawComposite ()V 后处理着色器执行后方法
+	getCustomTextures ([Lnet/optifine/shaders/Program;[Lnet/optifine/shaders/ICustomTexture;)[Lnet/optifine/shaders/ICustomTexture; 获取自定义纹理
+	getFlipBuffer ([Lnet/optifine/shaders/Program;)Lnet/optifine/shaders/FlipTextures; 获取当前乒乓缓冲区
+	getColorTextureImageUnit ([Lnet/optifine/shaders/Program;)[I 获取着色器缓冲区纹理单元集
+	parseShadowFormat (Ljava/lang/String;ILjava/lang/String;)V 获取阴影纹理格式配置
+	parseShadowClear (Ljava/lang/String;)V 获取阴影纹理清除配置
+	parseShadowClearColor (Ljava/lang/String;Lnet/optifine/shaders/config/ShaderLine;)V 获取阴影纹理清除颜色配置
+	genShadowCompMipmap ()V 生成阴影多层级纹理
+	clearShadowMap ()V 清空阴影纹理
+	setupShadowFlipBuffer ()V 初始化阴影乒乓缓冲区
+advancedshader/Hook$MoreStages$ShadowFlipTextures 光影前向兼容$更多后处理着色器$阴影乒乓缓冲区
+	textures 纹理集合
+	flip (I)V flip
+advancedshader/Hook$PropertyFix 光影前向兼容$配置文件修复
+	useShaderOptions 是否使用光影选项宏
+	shaderOptions 光影选项集合
+	getShaderOptionHeader (Ljava/lang/String;Ljava/lang/StringBuilder;)V 获取光影选项宏
+advancedshader/Hook$RenderStage 光影前向兼容$渲染阶段
+	NONE NONE
+	SKY SKY
+	SUNSET SUNSET
+	CUSTOM_SKY CUSTOM_SKY
+	SUN SUN
+	MOON MOON
+	STARS STARS
+	VOID VOID
+	TERRAIN_SOLID TERRAIN_SOLID
+	TERRAIN_CUTOUT_MIPPED TERRAIN_CUTOUT_MIPPED
+	TERRAIN_CUTOUT TERRAIN_CUTOUT
+	ENTITIES ENTITIES
+	BLOCK_ENTITIES BLOCK_ENTITIES
+	DESTROY DESTROY
+	OUTLINE OUTLINE
+	DEBUG DEBUG
+	HAND_SOLID HAND_SOLID
+	TERRAIN_TRANSLUCENT TERRAIN_TRANSLUCENT
+	TRIPWIRE TRIPWIRE
+	PARTICLES PARTICLES
+	CLOUDS CLOUDS
+	RAIN_SNOW RAIN_SNOW
+	WORLD_BORDER WORLD_BORDER
+	HAND_TRANSLUCENT HAND_TRANSLUCENT
+	values ()[Ladvancedshader/Hook$RenderStage; values
+	valueOf (Ljava/lang/String;)Ladvancedshader/Hook$RenderStage; valueOf
+	addRenderStageMacros ([Lnet/optifine/shaders/config/ShaderMacro;)[Lnet/optifine/shaders/config/ShaderMacro; 添加渲染阶段宏
+	setRenderStage (Ladvancedshader/Hook$RenderStage;)V setRenderStage
+advancedshader/Hook$VertexAttribute 光影前向兼容$顶点属性
+	checkAttributes (Lnet/optifine/shaders/config/ShaderLine;)V 检查顶点属性定义
+	bindAttributes (I)V 绑定顶点属性
+	setMidBlock (Lnet/minecraft/client/renderer/BufferBuilder;)V 设定at_MidBlock顶点属性
+advancedshader/core/Core 光影前向兼容核心/主程序
+	source 模组文件
+	acceptOptions (Ljava/util/List;Ljava/io/File;Ljava/io/File;Ljava/lang/String;)V acceptOptions
+	injectIntoClassLoader (Lnet/minecraft/launchwrapper/LaunchClassLoader;)V injectIntoClassLoader
+	getLaunchTarget ()Ljava/lang/String; getLaunchTarget
+	getLaunchArguments ()[Ljava/lang/String; getLaunchArguments
+advancedshader/core/patcher/Patcher 光影前向兼容核心/修补程序集/修补程序抽象类
+	LOGGER 日志记录器
+	HOOK HOOK
+	MOREBUFFERS MOREBUFFERS
+	FORWARDFEATURES FORWARDFEATURES
+	COREPROFILE COREPROFILE
+	LINESHADER LINESHADER
+	CHUNKOFFSET CHUNKOFFSET
+	ANISOTROPICFILTER ANISOTROPICFILTER
+	RENDERSTAGE RENDERSTAGE
+	PROPERTYFIX PROPERTYFIX
+	BUFFERSIZE BUFFERSIZE
+	VERTEXATTRIBUTE VERTEXATTRIBUTE
+	MORESTAGES MORESTAGES
+	SHADOWFILPTEXTURES SHADOWFILPTEXTURES
+	BLEND BLEND
+	COMPUTESHADER COMPUTESHADER
+	BLOCKALIASFIX BLOCKALIASFIX
+	MATCHBLOCKSTATE MATCHBLOCKSTATE
+	CUSTOMUNIFORM CUSTOMUNIFORM
+	CAMERAFIX CAMERAFIX
+	LANGFIX LANGFIX
+	target 目标类名
+	classPatch 类结构修补方法
+	methodPatch 类内方法修补集
+	methodPatched 已修补方法
+	transform (Ljava/lang/String;Ljava/lang/String;[B)[B transform
+	patch (Ljava/lang/String;Lorg/objectweb/asm/tree/MethodNode;[Lorg/objectweb/asm/tree/AbstractInsnNode;)[Lorg/objectweb/asm/tree/AbstractInsnNode; 字节码修补
+	inject (Lorg/objectweb/asm/tree/AbstractInsnNode;)Lorg/objectweb/asm/tree/AbstractInsnNode; 插入
+	remove (Lorg/objectweb/asm/tree/AbstractInsnNode;)Lorg/objectweb/asm/tree/AbstractInsnNode; 移除
+	collect (Lorg/objectweb/asm/tree/AbstractInsnNode;)Lorg/objectweb/asm/tree/AbstractInsnNode; 获取
+	matchAll ()Lorg/objectweb/asm/tree/AbstractInsnNode; 匹配任意字节码
+	checkIfMatch (Lorg/objectweb/asm/tree/AbstractInsnNode;[Lorg/objectweb/asm/tree/AbstractInsnNode;)Z 判断是否匹配目标
+	checkNodeEqual (Lorg/objectweb/asm/tree/AbstractInsnNode;Lorg/objectweb/asm/tree/AbstractInsnNode;)Z 判断字节码是否相等
+advancedshader/core/patcher/Patcher$1 光影前向兼容核心/修补程序集/修补程序抽象类$1
+advancedshader/core/patcher/Patcher$ByteCode 光影前向兼容核心/修补程序集/修补程序抽象类$字节码
+	ALoad (I)Lorg/objectweb/asm/tree/VarInsnNode; 对象入栈
+	AStore (I)Lorg/objectweb/asm/tree/VarInsnNode; 对象存储
+	ILoad (I)Lorg/objectweb/asm/tree/VarInsnNode; 整数入栈
+	IStore (I)Lorg/objectweb/asm/tree/VarInsnNode; 整数存储
+	LLoad (I)Lorg/objectweb/asm/tree/VarInsnNode; 长整数入栈
+	LStore (I)Lorg/objectweb/asm/tree/VarInsnNode; 长整数存储
+	FLoad (I)Lorg/objectweb/asm/tree/VarInsnNode; 单精度浮点数入栈
+	FStore (I)Lorg/objectweb/asm/tree/VarInsnNode; 单精度浮点数存储
+	DLoad (I)Lorg/objectweb/asm/tree/VarInsnNode; 双精度浮点数入栈
+	DStore (I)Lorg/objectweb/asm/tree/VarInsnNode; 双精度浮点数存储
+	GetStatic (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/FieldInsnNode; 静态属性入栈
+	PutStatic (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/FieldInsnNode; 静态属性存储
+	GetField (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/FieldInsnNode; 对象属性入栈
+	PutField (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/FieldInsnNode; 对象属性存储
+	InvokeStatic (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/MethodInsnNode; 调用静态方法
+	InvokeVirtual (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/MethodInsnNode; 调用对象方法
+	InvokeSpecial (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/MethodInsnNode; 调用特殊方法
+	InvokeInterface (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/objectweb/asm/tree/MethodInsnNode; 调用接口方法
+	Ldc (Ljava/lang/Object;)Lorg/objectweb/asm/tree/LdcInsnNode; 常量入栈
+	BIPush (I)Lorg/objectweb/asm/tree/IntInsnNode; 单字节常量入栈
+	SIPush (I)Lorg/objectweb/asm/tree/IntInsnNode; 双字节常量入栈
+	NewArray (I)Lorg/objectweb/asm/tree/IntInsnNode; 新建数组对象
+	Label ()Lorg/objectweb/asm/tree/LabelNode; 标签
+	LineNumber ()Lorg/objectweb/asm/tree/LineNumberNode; 行号
+	IConst (I)Lorg/objectweb/asm/tree/InsnNode; 整数常量入栈
+	FConst (I)Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数常量入栈
+	DConst (I)Lorg/objectweb/asm/tree/InsnNode; 双精度浮点数常量入栈
+	AConstNull ()Lorg/objectweb/asm/tree/InsnNode; 空对象入栈
+	Dup ()Lorg/objectweb/asm/tree/InsnNode; 复制栈顶
+	DupX1 ()Lorg/objectweb/asm/tree/InsnNode; 复制栈顶并插入位置1
+	AALoad ()Lorg/objectweb/asm/tree/InsnNode; 对象数组元素入栈
+	AAStore ()Lorg/objectweb/asm/tree/InsnNode; 对象数组元素存储
+	IALoad ()Lorg/objectweb/asm/tree/InsnNode; 整数数组元素入栈
+	IAStore ()Lorg/objectweb/asm/tree/InsnNode; 整数数组元素存储
+	FALoad ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数数组元素入栈
+	FAStore ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数数组元素存储
+	BALoad ()Lorg/objectweb/asm/tree/InsnNode; 单字节数组元素入栈
+	BAStore ()Lorg/objectweb/asm/tree/InsnNode; 单字节数组元素存储
+	Return ()Lorg/objectweb/asm/tree/InsnNode; 方法结束
+	AReturn ()Lorg/objectweb/asm/tree/InsnNode; 方法结束并返回对象
+	IReturn ()Lorg/objectweb/asm/tree/InsnNode; 方法结束并返回整数
+	IOr ()Lorg/objectweb/asm/tree/InsnNode; 整数逻辑或
+	IMul ()Lorg/objectweb/asm/tree/InsnNode; 整数相乘
+	IAdd ()Lorg/objectweb/asm/tree/InsnNode; 整数相加
+	ISub ()Lorg/objectweb/asm/tree/InsnNode; 整数相减
+	DAdd ()Lorg/objectweb/asm/tree/InsnNode; 双精度浮点数相加
+	DSub ()Lorg/objectweb/asm/tree/InsnNode; 双精度浮点数相减
+	DCmpG ()Lorg/objectweb/asm/tree/InsnNode; 双精度浮点数A是否大于B
+	FAdd ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数相加
+	FSub ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数相减
+	FMul ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数相乘
+	FDiv ()Lorg/objectweb/asm/tree/InsnNode; 单精度浮点数相除
+	I2F ()Lorg/objectweb/asm/tree/InsnNode; 整数转单精度浮点数
+	I2D ()Lorg/objectweb/asm/tree/InsnNode; 整数转双精度浮点数
+	D2F ()Lorg/objectweb/asm/tree/InsnNode; 双精度转单精度
+	F2D ()Lorg/objectweb/asm/tree/InsnNode; 单精度转双精度
+	Pop ()Lorg/objectweb/asm/tree/InsnNode; 丢弃栈顶
+	New (Ljava/lang/String;)Lorg/objectweb/asm/tree/TypeInsnNode; 新建对象
+	NewArray (Ljava/lang/String;)Lorg/objectweb/asm/tree/TypeInsnNode; 新建数组对象
+	CheckCast (Ljava/lang/String;)Lorg/objectweb/asm/tree/TypeInsnNode; 对象类型转换
+	InstanceOf (Ljava/lang/String;)Lorg/objectweb/asm/tree/TypeInsnNode; 判断对象继承
+	Goto (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 跳转
+	IfNull (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果是空对象则跳转
+	IfNotNull (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果对象非空则跳转
+	IfZero (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果为零则跳转
+	IfNotZero (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果非零则跳转
+	IfLessThanZero (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果小于零则跳转
+	IfGreaterEqualZero (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果大于等于零则跳转
+	IfGreaterThanZero (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果大于零则跳转
+	IfObjEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果是同一对象则跳转
+	IfObjNotEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果是不同对象则跳转
+	IfIntEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数相等则跳转
+	IfIntGreaterEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数A大于等于整数B则跳转
+	IfIntGreaterThan (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数A大于整数B则跳转
+	IfIntLessEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数A小于等于整数B则跳转
+	IfIntLessThan (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数A小于整数B则跳转
+	IfIntNotEqual (Lorg/objectweb/asm/tree/LabelNode;)Lorg/objectweb/asm/tree/JumpInsnNode; 如果整数不相等则跳转
+	Frame ()Lorg/objectweb/asm/tree/FrameNode; 栈结构定义
+	Inc (II)Lorg/objectweb/asm/tree/IincInsnNode; 整数变量数值增加
+	LookupSwitch ()Lorg/objectweb/asm/tree/LookupSwitchInsnNode; 按数值跳转
+	TableSwitch ()Lorg/objectweb/asm/tree/TableSwitchInsnNode; 按对照表跳转
+advancedshader/core/patcher/Patcher$ClassPatch 光影前向兼容核心/修补程序集/修补程序抽象类$类修补
+advancedshader/core/patcher/Patcher$MethodPatch 光影前向兼容核心/修补程序集/修补程序抽象类$方法修补
+	value ()Ljava/lang/String; value
+advancedshader/core/patcher/Patcher$Methods 光影前向兼容核心/修补程序集/修补程序抽象类$方法修补集
+	value ()[Ladvancedshader/core/patcher/Patcher$MethodPatch; value
+advancedshader/core/patcher/Patcher$ModifyingNode 光影前向兼容核心/修补程序集/修补程序抽象类$字节码修补节点
+	MODE_INJECT MODE_INJECT
+	MODE_REMOVE MODE_REMOVE
+	MODE_COLLECT MODE_COLLECT
+	MODE_MATCH_ALL MODE_MATCH_ALL
+	node 目标字节码
+	mode 修补模式
+advancedshader/core/patcher/Patcher$Patch 光影前向兼容核心/修补程序集/修补程序抽象类$修补目标
+	value ()Ljava/lang/String; value
+advancedshader/core/patcher/Patcher$弱智八哥报错器 光影前向兼容核心/修补程序集/修补程序抽象类$弱智八哥报错器
+	哈哈哈哈哈哈哈 哈哈哈哈哈哈哈
+	让我想想怎么骂这个开发者 ()V 让我想想怎么骂这个开发者
+advancedshader/core/patcher/forge/FMLClientHandlerPatcher 光影前向兼容核心/修补程序集/模组加载器/FMLClientHandler修补程序
+	getAdditionalBrandingInformation (Lorg/objectweb/asm/tree/MethodNode;)V getAdditionalBrandingInformation
+advancedshader/core/patcher/forge/ItemLayerModelPatcher 光影前向兼容核心/修补程序集/模组加载器/ItemLayerModel修补程序
+	buildSideQuad (Lorg/objectweb/asm/tree/MethodNode;)V buildSideQuad
+advancedshader/core/patcher/forge/MinecraftForgeClientPatcher 光影前向兼容核心/修补程序集/模组加载器/MinecraftForgeClient修补程序
+	getRenderLayer (Lorg/objectweb/asm/tree/MethodNode;)V getRenderLayer
+advancedshader/core/patcher/optifine/BlockAliasesPatcher 光影前向兼容核心/修补程序集/高清修复模组/BlockAliases修补程序
+	loadBlockAliases (Lorg/objectweb/asm/tree/MethodNode;)V loadBlockAliases
+advancedshader/core/patcher/optifine/ConnectedParserPatcher 光影前向兼容核心/修补程序集/高清修复模组/ConnectedParser修补程序
+	parseMatchBlock (Lorg/objectweb/asm/tree/MethodNode;)V parseMatchBlock
+	parseBlockMetadatas (Lorg/objectweb/asm/tree/MethodNode;)V parseBlockMetadatas
+advancedshader/core/patcher/optifine/CustomSkyPatcher 光影前向兼容核心/修补程序集/高清修复模组/CustomSky修补程序
+	renderSky (Lorg/objectweb/asm/tree/MethodNode;)V renderSky
+advancedshader/core/patcher/optifine/EntityAliasesPatcher 光影前向兼容核心/修补程序集/高清修复模组/EntityAliases修补程序
+	loadEntityAliases (Lorg/objectweb/asm/tree/MethodNode;)V loadEntityAliases
+	reset (Lorg/objectweb/asm/tree/MethodNode;)V reset
+advancedshader/core/patcher/optifine/EnumShaderOptionPatcher 光影前向兼容核心/修补程序集/高清修复模组/EnumShaderOption修补程序
+	clinit (Lorg/objectweb/asm/tree/MethodNode;)V clinit
+advancedshader/core/patcher/optifine/GuiButtonEnumShaderOptionPatcher 光影前向兼容核心/修补程序集/高清修复模组/GuiButtonEnumShaderOption修补程序
+	getButtonText (Lorg/objectweb/asm/tree/MethodNode;)V getButtonText
+advancedshader/core/patcher/optifine/GuiShadersPatcher 光影前向兼容核心/修补程序集/高清修复模组/GuiShaders修补程序
+	initGui (Lorg/objectweb/asm/tree/MethodNode;)V initGui
+	actionPerformed (Lorg/objectweb/asm/tree/MethodNode;)V actionPerformed
+advancedshader/core/patcher/optifine/GuiSlotShadersPatcher 光影前向兼容核心/修补程序集/高清修复模组/GuiSlotShaders修补程序
+	checkCompatible (Lorg/objectweb/asm/tree/MethodNode;)V checkCompatible
+advancedshader/core/patcher/optifine/ItemAliasesPatcher 光影前向兼容核心/修补程序集/高清修复模组/ItemAliases修补程序
+	loadItemAliases (Lorg/objectweb/asm/tree/MethodNode;)V loadItemAliases
+	getItemAliasId (Lorg/objectweb/asm/tree/MethodNode;)V getItemAliasId
+advancedshader/core/patcher/optifine/MacroProcessorPatcher 光影前向兼容核心/修补程序集/高清修复模组/MacroProcessor修补程序
+	getMacroHeader (Lorg/objectweb/asm/tree/MethodNode;)V getMacroHeader
+	process (Lorg/objectweb/asm/tree/MethodNode;)V process
+advancedshader/core/patcher/optifine/MacroStatePatcher 光影前向兼容核心/修补程序集/高清修复模组/MacroState修补程序
+	processMacro (Lorg/objectweb/asm/tree/MethodNode;)V processMacro
+advancedshader/core/patcher/optifine/ProgramPatcher 光影前向兼容核心/修补程序集/高清修复模组/Program修补程序
+	clinit (Lorg/objectweb/asm/tree/MethodNode;)V clinit
+advancedshader/core/patcher/optifine/PropertiesOrderedPatcher 光影前向兼容核心/修补程序集/高清修复模组/PropertiesOrdered修补程序
+	put (Lorg/objectweb/asm/tree/MethodNode;)V put
+advancedshader/core/patcher/optifine/SVertexBuilderPatcher 光影前向兼容核心/修补程序集/高清修复模组/SVertexBuilder修补程序
+	drawArrays (Lorg/objectweb/asm/tree/MethodNode;)V drawArrays
+	pushEntity (Lorg/objectweb/asm/tree/MethodNode;)V pushEntity
+advancedshader/core/patcher/optifine/ShaderExpressionResolverPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShaderExpressionResolver修补程序
+	registerExpressions (Lorg/objectweb/asm/tree/MethodNode;)V registerExpressions
+advancedshader/core/patcher/optifine/ShaderMacrosPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShaderMacros修补程序
+	getFixedMacroLines (Lorg/objectweb/asm/tree/MethodNode;)V getFixedMacroLines
+	getExtensions (Lorg/objectweb/asm/tree/MethodNode;)V getExtensions
+advancedshader/core/patcher/optifine/ShaderPackParserPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShaderPackParser修补程序
+	resolveIncludes (Lorg/objectweb/asm/tree/MethodNode;)V resolveIncludes
+	parseBlendStates (Lorg/objectweb/asm/tree/MethodNode;)V parseBlendStates
+	collectShaderOptions (Lorg/objectweb/asm/tree/MethodNode;)V collectShaderOptions
+advancedshader/core/patcher/optifine/ShaderPackZipPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShaderPackZip修补程序
+	getResourceAsStream (Lorg/objectweb/asm/tree/MethodNode;)V getResourceAsStream
+advancedshader/core/patcher/optifine/ShaderParserPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShaderParser修补程序
+	clinit (Lorg/objectweb/asm/tree/MethodNode;)V clinit
+	getColorIndex (Lorg/objectweb/asm/tree/MethodNode;)V getColorIndex
+	getIndex (Lorg/objectweb/asm/tree/MethodNode;)V getIndex
+advancedshader/core/patcher/optifine/ShadersPatcher 光影前向兼容核心/修补程序集/高清修复模组/Shaders修补程序
+	clinit (Lorg/objectweb/asm/tree/MethodNode;)V clinit
+	initDrawBuffers (Lorg/objectweb/asm/tree/MethodNode;)V initDrawBuffers
+	getDrawBuffer (Lorg/objectweb/asm/tree/MethodNode;)V getDrawBuffer
+	bindGbuffersTextures (Lorg/objectweb/asm/tree/MethodNode;)V bindGbuffersTextures
+	useProgram (Lorg/objectweb/asm/tree/MethodNode;)V useProgram
+	getBufferIndexFromString (Lorg/objectweb/asm/tree/MethodNode;)V getBufferIndexFromString
+	setupFrameBuffer (Lorg/objectweb/asm/tree/MethodNode;)V setupFrameBuffer
+	uninit (Lorg/objectweb/asm/tree/MethodNode;)V uninit
+	beginRender (Lorg/objectweb/asm/tree/MethodNode;)V beginRender
+	clearRenderBuffer (Lorg/objectweb/asm/tree/MethodNode;)V clearRenderBuffer
+	renderDeferred (Lorg/objectweb/asm/tree/MethodNode;)V renderDeferred
+	renderComposites (Lorg/objectweb/asm/tree/MethodNode;)V renderComposites
+	renderFinal (Lorg/objectweb/asm/tree/MethodNode;)V renderFinal
+	createFragShader (Lorg/objectweb/asm/tree/MethodNode;)V createFragShader
+	getEnumShaderOption (Lorg/objectweb/asm/tree/MethodNode;)V getEnumShaderOption
+	setEnumShaderOption (Lorg/objectweb/asm/tree/MethodNode;)V setEnumShaderOption
+	loadShaderPack (Lorg/objectweb/asm/tree/MethodNode;)V loadShaderPack
+	loadShaderPackProperties (Lorg/objectweb/asm/tree/MethodNode;)V loadShaderPackProperties
+	init (Lorg/objectweb/asm/tree/MethodNode;)V init
+	preDrawComposite (Lorg/objectweb/asm/tree/MethodNode;)V preDrawComposite
+	postDrawComposite (Lorg/objectweb/asm/tree/MethodNode;)V postDrawComposite
+	getFramebufferStatusText (Lorg/objectweb/asm/tree/MethodNode;)V getFramebufferStatusText
+	setupProgram (Lorg/objectweb/asm/tree/MethodNode;)V setupProgram
+	createVertShader (Lorg/objectweb/asm/tree/MethodNode;)V createVertShader
+	getTextureIndex (Lorg/objectweb/asm/tree/MethodNode;)V getTextureIndex
+	resetCustomTextures (Lorg/objectweb/asm/tree/MethodNode;)V resetCustomTextures
+	setupShadowFrameBuffer (Lorg/objectweb/asm/tree/MethodNode;)V setupShadowFrameBuffer
+	updateAlphaBlend (Lorg/objectweb/asm/tree/MethodNode;)V updateAlphaBlend
+	getPixelFormat (Lorg/objectweb/asm/tree/MethodNode;)V getPixelFormat
+	setCamera (Lorg/objectweb/asm/tree/MethodNode;)V setCamera
+	setCameraShadow (Lorg/objectweb/asm/tree/MethodNode;)V setCameraShadow
+	getCameraPosition (Lorg/objectweb/asm/tree/MethodNode;)V getCameraPosition
+	setEntityId (Lorg/objectweb/asm/tree/MethodNode;)V setEntityId
+	beginSky (Lorg/objectweb/asm/tree/MethodNode;)V beginSky
+	beginClouds (Lorg/objectweb/asm/tree/MethodNode;)V beginClouds
+	beginEntities (Lorg/objectweb/asm/tree/MethodNode;)V beginEntities
+	beginBlockEntities (Lorg/objectweb/asm/tree/MethodNode;)V beginBlockEntities
+	beginParticles (Lorg/objectweb/asm/tree/MethodNode;)V beginParticles
+	beginWeather (Lorg/objectweb/asm/tree/MethodNode;)V beginWeather
+	resetRenderStage (Lorg/objectweb/asm/tree/MethodNode;)V 重置渲染阶段
+	beginHand (Lorg/objectweb/asm/tree/MethodNode;)V beginHand
+	endHand (Lorg/objectweb/asm/tree/MethodNode;)V endHand
+advancedshader/core/patcher/optifine/ShadersRenderPatcher 光影前向兼容核心/修补程序集/高清修复模组/ShadersRender修补程序
+	renderShadowMap (Lorg/objectweb/asm/tree/MethodNode;)V renderShadowMap
+	preRenderChunkLayer (Lorg/objectweb/asm/tree/MethodNode;)V preRenderChunkLayer
+	postRenderChunkLayer (Lorg/objectweb/asm/tree/MethodNode;)V postRenderChunkLayer
+	setupArrayPointersVbo (Lorg/objectweb/asm/tree/MethodNode;)V setupArrayPointersVbo
+	beginTerrainSolid (Lorg/objectweb/asm/tree/MethodNode;)V beginTerrainSolid
+	beginTerrainCutoutMipped (Lorg/objectweb/asm/tree/MethodNode;)V beginTerrainCutoutMipped
+	beginTerrainCutout (Lorg/objectweb/asm/tree/MethodNode;)V beginTerrainCutout
+	beginBlockDamage (Lorg/objectweb/asm/tree/MethodNode;)V beginBlockDamage
+	resetRenderStage (Lorg/objectweb/asm/tree/MethodNode;)V 重置渲染阶段
+advancedshader/core/patcher/vanilla/BlockRenderLayerPatcher 光影前向兼容核心/修补程序集/我的世界/BlockRenderLayer修补程序
+	clinit (Lorg/objectweb/asm/tree/MethodNode;)V clinit
+	values (Lorg/objectweb/asm/tree/MethodNode;)V values
+advancedshader/core/patcher/vanilla/BufferBuilderPatcher 光影前向兼容核心/修补程序集/我的世界/BufferBuilder修补程序
+	quadsToTriangles (Lorg/objectweb/asm/tree/MethodNode;)V quadsToTriangles
+	getDrawMode (Lorg/objectweb/asm/tree/MethodNode;)V getDrawMode
+	endVertex (Lorg/objectweb/asm/tree/MethodNode;)V endVertex
+	drawForIcon (Lorg/objectweb/asm/tree/MethodNode;)V drawForIcon
+	draw (Lorg/objectweb/asm/tree/MethodNode;)V draw
+	putPosition (Lorg/objectweb/asm/tree/MethodNode;)V putPosition
+advancedshader/core/patcher/vanilla/ChunkRenderContainerPatcher 光影前向兼容核心/修补程序集/我的世界/ChunkRenderContainer修补程序
+	preRenderChunk (Lorg/objectweb/asm/tree/MethodNode;)V preRenderChunk
+advancedshader/core/patcher/vanilla/ChunkRenderDispatcherPatcher 光影前向兼容核心/修补程序集/我的世界/ChunkRenderDispatcher修补程序
+	uploadChunk (Lorg/objectweb/asm/tree/MethodNode;)V uploadChunk
+advancedshader/core/patcher/vanilla/EntityRendererPatcher 光影前向兼容核心/修补程序集/我的世界/EntityRenderer修补程序
+	renderWorldPass (Lorg/objectweb/asm/tree/MethodNode;)V renderWorldPass
+advancedshader/core/patcher/vanilla/GameSettingsPatcher 光影前向兼容核心/修补程序集/我的世界/GameSettings修补程序
+	setOptionFloatValueOF (Lorg/objectweb/asm/tree/MethodNode;)V setOptionFloatValueOF
+advancedshader/core/patcher/vanilla/GlStateManagerPatcher 光影前向兼容核心/修补程序集/我的世界/GlStateManager修补程序
+	patch (Lorg/objectweb/asm/tree/ClassNode;)V patch
+advancedshader/core/patcher/vanilla/GuiOverlayDebugPatcher 光影前向兼容核心/修补程序集/我的世界/GuiOverlayDebug修补程序
+	call (Lorg/objectweb/asm/tree/MethodNode;)V call
+advancedshader/core/patcher/vanilla/GuiVideoSettingsPatcher 光影前向兼容核心/修补程序集/我的世界/GuiVideoSettings修补程序
+	actionPerformed (Lorg/objectweb/asm/tree/MethodNode;)V actionPerformed
+advancedshader/core/patcher/vanilla/RegionRenderCacheBuilderPatcher 光影前向兼容核心/修补程序集/我的世界/RegionRenderCacheBuilder修补程序
+	init (Lorg/objectweb/asm/tree/MethodNode;)V init
+advancedshader/core/patcher/vanilla/RenderChunkPatcher 光影前向兼容核心/修补程序集/我的世界/RenderChunk修补程序
+	fixBlockLayer (Lorg/objectweb/asm/tree/MethodNode;)V fixBlockLayer
+	multModelviewMatrix (Lorg/objectweb/asm/tree/MethodNode;)V multModelviewMatrix
+advancedshader/core/patcher/vanilla/RenderGlobalPatcher 光影前向兼容核心/修补程序集/我的世界/RenderGlobal修补程序
+	renderEntities (Lorg/objectweb/asm/tree/MethodNode;)V renderEntities
+	renderSky (Lorg/objectweb/asm/tree/MethodNode;)V renderSky
+	renderWorldBorder (Lorg/objectweb/asm/tree/MethodNode;)V renderWorldBorder
+	drawBoundingBox (Lorg/objectweb/asm/tree/MethodNode;)V drawBoundingBox
+advancedshader/core/patcher/vanilla/RenderListPatcher 光影前向兼容核心/修补程序集/我的世界/RenderList修补程序
+	preRenderRegion (Lorg/objectweb/asm/tree/MethodNode;)V preRenderRegion
+advancedshader/core/patcher/vanilla/TextureMapPatcher 光影前向兼容核心/修补程序集/我的世界/TextureMap修补程序
+	loadTextureAtlas (Lorg/objectweb/asm/tree/MethodNode;)V loadTextureAtlas
+	updateAnimations (Lorg/objectweb/asm/tree/MethodNode;)V updateAnimations
+advancedshader/core/patcher/vanilla/VboRenderListPatcher 光影前向兼容核心/修补程序集/我的世界/VboRenderList修补程序
+	preRenderRegion (Lorg/objectweb/asm/tree/MethodNode;)V preRenderRegion
+advancedshader/core/patcher/vanilla/WorldClientPatcher 光影前向兼容核心/修补程序集/我的世界/WorldClient修补程序
+	updateBlocks (Lorg/objectweb/asm/tree/MethodNode;)V updateBlocks
+	playMoodSoundAndCheckLight (Lorg/objectweb/asm/tree/MethodNode;)V playMoodSoundAndCheckLight
+advancedshader/core/patcher/vanilla/WorldVertexBufferUploaderPatcher 光影前向兼容核心/修补程序集/我的世界/WorldVertexBufferUploader修补程序
+	draw (Lorg/objectweb/asm/tree/MethodNode;)V draw

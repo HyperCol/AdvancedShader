@@ -1,0 +1,5 @@
+#PARSE_ESCAPES
+
+advancedshader.option.renderer=渲染机制: %s
+advancedshader.option.blockid=方块 ID: %s
+advancedshader.option.playermood=氛围值机制: %s

@@ -1,0 +1,5 @@
+#PARSE_ESCAPES
+
+advancedshader.option.renderer=Renderer: %s
+advancedshader.option.blockid=Block ID: %s
+advancedshader.option.playermood=Player Mood: %s
