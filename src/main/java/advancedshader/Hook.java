@@ -975,7 +975,8 @@ public class Hook extends DummyModContainer {
                     && !clazz.startsWith("sun.")
                     && !clazz.startsWith("javax.")
                     && !clazz.startsWith("net.minecraft")
-                    && !clazz.startsWith("net.optifine")) {
+                    && !clazz.startsWith("net.optifine")
+                    && !clazz.startsWith("blusunrize.immersiveengineering")) {
                 for (int i = 0; i < layers.length; i++) {
                     if (layers[i] == TRIPWIRE) {
                         layers[i] = BlockRenderLayer.CUTOUT;
@@ -996,7 +997,8 @@ public class Hook extends DummyModContainer {
                         && !clazz.startsWith("sun.")
                         && !clazz.startsWith("javax.")
                         && !clazz.startsWith("net.minecraft")
-                        && !clazz.startsWith("net.optifine")) {
+                        && !clazz.startsWith("net.optifine")
+                        && !clazz.startsWith("blusunrize.immersiveengineering")) {
                     return BlockRenderLayer.CUTOUT;
                 }
             }
