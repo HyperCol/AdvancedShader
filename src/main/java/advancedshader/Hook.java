@@ -672,7 +672,7 @@ public class Hook extends DummyModContainer {
 
         // Shaders.useProgram
         public static void attachColorBuffer(Program program) {
-            if (!Shaders.isShaderPackInitialized || program.getProgramStage() == ProgramStage.NONE || program == Shaders.ProgramFinal) {
+            if (!Shaders.isShaderPackInitialized || !Shaders.isRenderingWorld || program.getProgramStage() == ProgramStage.NONE || program == Shaders.ProgramFinal) {
                 return;
             }
 
@@ -968,15 +968,26 @@ public class Hook extends DummyModContainer {
 
         // BlockRenderLayer.values
         public static BlockRenderLayer[] getBlockRenderLayers(BlockRenderLayer[] layers) {
-            StackTraceElement element = new Exception().getStackTrace()[2];
+            StackTraceElement[] elements = new Exception().getStackTrace();
+            StackTraceElement element = elements[2];
             String clazz = element.getClassName();
+
+            boolean ie = false;
+
+            for (int i = 2; i < Math.min(10, elements.length); i++) {
+                if (elements[i].getClassName().startsWith("blusunrize.immersiveengineering")) {
+                    ie = true;
+
+                    break;
+                }
+            }
 
             if (!clazz.startsWith("java.")
                     && !clazz.startsWith("sun.")
                     && !clazz.startsWith("javax.")
                     && !clazz.startsWith("net.minecraft")
                     && !clazz.startsWith("net.optifine")
-                    && !clazz.startsWith("blusunrize.immersiveengineering")) {
+                    && !ie) {
                 for (int i = 0; i < layers.length; i++) {
                     if (layers[i] == TRIPWIRE) {
                         layers[i] = BlockRenderLayer.CUTOUT;
